@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h> // for strtol, abs, and EXIT_ constants
+#include <math.h>
 
 int gcd(int a, int b);
 int parse_input(const char *str);

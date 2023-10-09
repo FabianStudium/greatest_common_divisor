@@ -10,7 +10,9 @@ CFLAGS = -Wall -std=c11
 EXE = gcd
 
 # Space-separated list of source files
-SOURCES = main.c
+SOURCES = main.c ../../factor/factor/factor.c
+
+# gcc -o gcd_program gcd.c factor.c -lm
 
 # Automatically generated list of object files
 OBJS = $(SOURCES:.c=.o)
@@ -21,6 +23,7 @@ $(EXE): $(OBJS)
 
 # Dependencies
 main.o: main.c main.h
+../../factor/factor/factor.o: ../../factor/factor/factor.c ../../factor/factor/factor.h
 
 # Housekeeping
 clean:

@@ -6,6 +6,7 @@
 //
 
 #include "main.h"
+#include "../../factor/factor/factor.h"
 
 int main(const int argc, const char * argv[]) {
     check_argument_count(argc);
@@ -19,6 +20,9 @@ int main(const int argc, const char * argv[]) {
     
     return EXIT_SUCCESS;
 }
+
+/*
+Wenn man die Angabe nicht lesen kann, kann man die gcd() Funktion auch ohne factor functions schreiben
 
 int gcd(int a, int b) {
     // Take absolute values to handle negative numbers
@@ -40,6 +44,47 @@ int gcd(int a, int b) {
     }
     
     return a;
+}
+ */
+
+int gcd(int a, int b) {
+    int primes_max_a = log2(a);
+    int primes_max_b = log2(b);
+    
+    int *factors_a = (int *)malloc(sizeof(int) * primes_max_a);
+    int *factors_b = (int *)malloc(sizeof(int) * primes_max_b);
+    //... [Handle memory allocation failure]
+    
+    calculate_prime_factors(a, factors_a);
+    calculate_prime_factors(b, factors_b);
+    
+    int *primes_a = (int *)malloc(sizeof(int) * primes_max_a);
+    int *primes_b = (int *)malloc(sizeof(int) * primes_max_b);
+    int *frequencies_a = (int *)malloc(sizeof(int) * primes_max_a);
+    int *frequencies_b = (int *)malloc(sizeof(int) * primes_max_b);
+    //... [Handle memory allocation failure]
+    
+    calculate_prime_frequencies(factors_a, primes_a, frequencies_a, primes_max_a);
+    calculate_prime_frequencies(factors_b, primes_b, frequencies_b, primes_max_b);
+    
+    int gcd_result = 1;
+    
+    for (int i = 0; i < primes_max_a; i++) {
+        for (int j = 0; j < primes_max_b; j++) {
+            if (primes_a[i] == primes_b[j]) {
+                gcd_result *= pow(primes_a[i], fmin(frequencies_a[i], frequencies_b[j]));
+            }
+        }
+    }
+    
+    free(factors_a);
+    free(factors_b);
+    free(primes_a);
+    free(primes_b);
+    free(frequencies_a);
+    free(frequencies_b);
+    
+    return gcd_result;
 }
 
 // Source: ChatGPT
